@@ -36,7 +36,6 @@ export default function LovePage() {
     };
   }, [step]);
 
-  /* Popup Content Controller */
   const getPopup = () => {
     switch (step) {
       case 0:
@@ -99,15 +98,6 @@ export default function LovePage() {
 
   return (
     <div className="container">
-
-      {/* Floating hearts */}
-      <div className="hearts">
-        {[...Array(20)].map((_, i) => (
-          <span key={i}></span>
-        ))}
-      </div>
-
-      {/* Popup */}
       {popupData && (
         <Popup
           text={popupData.text}
@@ -116,21 +106,16 @@ export default function LovePage() {
         />
       )}
 
-      {/* Final Page */}
       {step === 7 && (
         <main>
           <h1>🌙 Happy Mahashivratri 🌙</h1>
-          <h2>For My Love Arushi Yadav Gurjar ❤️</h2>
+          <h2>For My Love ❤️</h2>
 
           <div className="quote">{quotes[quoteIndex]}</div>
 
           <div className="slider">
             <img src={images[currentImage]} className="slideImage" />
           </div>
-
-          <p className="footer">
-            May Lord Shiva bless our love forever 💞
-          </p>
         </main>
       )}
 
@@ -140,92 +125,14 @@ export default function LovePage() {
           background: linear-gradient(120deg, #020024, #090979, #00d4ff);
           color: white;
           text-align: center;
-          padding: 20px;
-          overflow: hidden;
-        }
-
-        /* Popup Overlay */
-        .popup {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.85);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 999;
-        }
-
-        /* Popup Box */
-        .popupBox {
-          background: linear-gradient(145deg, #ffffff, #ffe6f0);
-          color: #222;
-          padding: 30px;
-          border-radius: 18px;
-          width: 340px;
-          max-width: 90%;
-          text-align: center;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-          animation: popIn 0.35s ease;
-        }
-
-        /* Normal buttons */
-        .btnWrap {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 10px;
-          margin-top: 15px;
-        }
-
-        /* Grid numbers */
-        .gridWrap {
-          display: grid;
-          grid-template-columns: repeat(2, 70px);
-          gap: 12px;
-          justify-content: center;
-          margin-top: 15px;
-        }
-
-        .gridBtn {
-          width: 70px;
-          height: 70px;
-          font-size: 22px;
-          border-radius: 12px;
-          background: linear-gradient(45deg, #ff4081, #ff80ab);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        button {
-          padding: 10px 18px;
-          border-radius: 25px;
-          border: none;
-          background: linear-gradient(45deg, #ff4081, #ff80ab);
-          color: white;
-          cursor: pointer;
-          font-size: 14px;
-          font-weight: 600;
-          transition: 0.2s;
-        }
-
-        button:hover {
-          transform: scale(1.05);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        @keyframes popIn {
-          from { transform: scale(.75); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
         }
 
         .slider {
-          width: 90%;
-          max-width: 650px;
+          max-width: 600px;
           margin: auto;
           border-radius: 20px;
           overflow: hidden;
-          box-shadow: 0 0 30px rgba(255,255,255,0.6);
+          box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
         }
 
         .slideImage {
@@ -234,48 +141,123 @@ export default function LovePage() {
         }
 
         @keyframes zoomEffect {
-          from { transform: scale(1); }
-          to { transform: scale(1.15); }
+          from {
+            transform: scale(1);
+          }
+          to {
+            transform: scale(1.15);
+          }
         }
 
-        .quote { margin:20px; font-size:20px; }
-
-        .hearts span {
-          position:absolute;
-          bottom:-50px;
-          width:20px;
-          height:20px;
-          background:red;
-          transform:rotate(45deg);
-          animation:rise 10s linear infinite;
-        }
-
-        @keyframes rise {
-          to { transform:translateY(-110vh) rotate(45deg); }
+        .quote {
+          margin: 20px;
+          font-size: 20px;
         }
       `}</style>
     </div>
   );
 }
 
+/* ---------------- Popup ---------------- */
+
 function Popup({ text, buttons, grid }: any) {
   return (
-    <div className="popup">
-      <div className="popupBox">
-        <h3 style={{ whiteSpace: "pre-line" }}>{text}</h3>
+    <>
+      <div className="popup">
+        <div className="popupBox">
+          <h3 className="popupText">{text}</h3>
 
-        <div className={grid ? "gridWrap" : "btnWrap"}>
-          {buttons.map((b: any, i: number) => (
-            <button
-              key={i}
-              className={grid ? "gridBtn" : ""}
-              onClick={b.action}
-            >
-              {b.label}
-            </button>
-          ))}
+          <div className={grid ? "gridWrap" : "btnWrap"}>
+            {buttons.map((b: any, i: number) => (
+              <button
+                key={i}
+                className={grid ? "gridBtn" : "normalBtn"}
+                onClick={b.action}
+              >
+                {b.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+
+      <style jsx>{`
+        .popup {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(6px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 999;
+        }
+
+        .popupBox {
+          background: linear-gradient(145deg, #ffffff, #ffe4ec);
+          padding: 35px;
+          border-radius: 24px;
+          width: 420px;
+          max-width: 92%;
+          text-align: center;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+          animation: popIn 0.4s ease;
+        }
+
+        .popupText {
+          font-size: 20px;
+          margin-bottom: 20px;
+          color: #222;
+          white-space: pre-line;
+        }
+
+        .btnWrap {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+
+        .gridWrap {
+          display: grid;
+          grid-template-columns: repeat(2, 110px);
+          gap: 16px;
+          justify-content: center;
+        }
+
+        .gridBtn {
+          width: 110px;
+          height: 110px;
+          font-size: 30px;
+          font-weight: bold;
+          border-radius: 18px;
+          border: none;
+          cursor: pointer;
+          background: linear-gradient(45deg, #ff4081, #ff80ab);
+          color: white;
+        }
+
+        .normalBtn {
+          padding: 12px 22px;
+          border-radius: 30px;
+          border: none;
+          background: linear-gradient(45deg, #ff4081, #ff80ab);
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        @keyframes popIn {
+          from {
+            opacity: 0;
+            transform: scale(0.7);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
+    </>
   );
 }
