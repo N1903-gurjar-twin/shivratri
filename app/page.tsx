@@ -49,13 +49,16 @@ export default function LovePage() {
 
       case 1:
         return {
-          text: "Do you remember our beautiful memories?",
-          buttons: [{ label: "Of course", action: () => nextStep(2) }],
+          text: "Be honest 😄\nWho is more cute?",
+          buttons: [
+            { label: "You 😍", action: () => nextStep(2) },
+            { label: "Me 😎", action: () => nextStep(2) },
+          ],
         };
 
       case 2:
         return {
-          text: "Choose a lucky number 💖",
+          text: "Choose lucky number 💖",
           grid: true,
           buttons: [
             { label: "1", action: () => nextStep(3) },
@@ -73,7 +76,7 @@ export default function LovePage() {
 
       case 4:
         return {
-          text: "Kukoo loves you soooo much ❤️",
+          text: "Kukoo loves you sooo much ❤️",
           buttons: [{ label: "Aww 💞", action: () => nextStep(5) }],
         };
 
@@ -98,6 +101,14 @@ export default function LovePage() {
 
   return (
     <div className="container">
+
+      {/* Floating hearts */}
+      <div className="hearts">
+        {[...Array(25)].map((_, i) => (
+          <span key={i}></span>
+        ))}
+      </div>
+
       {popupData && (
         <Popup
           text={popupData.text}
@@ -107,11 +118,13 @@ export default function LovePage() {
       )}
 
       {step === 7 && (
-        <main>
+        <main className="mainReveal">
           <h1>🌙 Happy Mahashivratri 🌙</h1>
           <h2>For My Love ❤️</h2>
 
-          <div className="quote">{quotes[quoteIndex]}</div>
+          <div key={quoteIndex} className="quote">
+            {quotes[quoteIndex]}
+          </div>
 
           <div className="slider">
             <img src={images[currentImage]} className="slideImage" />
@@ -125,6 +138,28 @@ export default function LovePage() {
           background: linear-gradient(120deg, #020024, #090979, #00d4ff);
           color: white;
           text-align: center;
+          overflow: hidden;
+          padding: 30px;
+        }
+
+        .mainReveal {
+          animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quote {
+          margin: 20px;
+          font-size: 20px;
+          animation: fadeQuote 1s ease;
+        }
+
+        @keyframes fadeQuote {
+          from { opacity:0; }
+          to { opacity:1; }
         }
 
         .slider {
@@ -132,33 +167,55 @@ export default function LovePage() {
           margin: auto;
           border-radius: 20px;
           overflow: hidden;
-          box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+          box-shadow: 0 0 40px rgba(255,255,255,0.7);
         }
 
         .slideImage {
           width: 100%;
-          animation: zoomEffect 5s ease-in-out infinite alternate;
+          animation: zoomEffect 6s ease-in-out infinite alternate;
         }
 
         @keyframes zoomEffect {
-          from {
-            transform: scale(1);
-          }
-          to {
-            transform: scale(1.15);
-          }
+          from { transform: scale(1); }
+          to { transform: scale(1.18); }
         }
 
-        .quote {
-          margin: 20px;
-          font-size: 20px;
+        /* floating hearts */
+        .hearts span {
+          position: absolute;
+          bottom: -50px;
+          width: 20px;
+          height: 20px;
+          background: red;
+          transform: rotate(45deg);
+          animation: rise 10s linear infinite;
+          opacity: 0.7;
+        }
+
+        .hearts span::before,
+        .hearts span::after {
+          content: "";
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          background: red;
+          border-radius: 50%;
+        }
+
+        .hearts span::before { top:-10px; }
+        .hearts span::after { left:-10px; }
+
+        @keyframes rise {
+          to {
+            transform: translateY(-110vh) rotate(45deg);
+          }
         }
       `}</style>
     </div>
   );
 }
 
-/* ---------------- Popup ---------------- */
+/* -------- Popup -------- */
 
 function Popup({ text, buttons, grid }: any) {
   return (
@@ -185,23 +242,21 @@ function Popup({ text, buttons, grid }: any) {
         .popup {
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.7);
-          backdrop-filter: blur(6px);
+          background: rgba(0,0,0,0.6);
+          backdrop-filter: blur(8px);
           display: flex;
           justify-content: center;
           align-items: center;
-          z-index: 999;
         }
 
         .popupBox {
-          background: linear-gradient(145deg, #ffffff, #ffe4ec);
+          background: linear-gradient(145deg,#fff,#ffe4ec);
           padding: 35px;
           border-radius: 24px;
           width: 420px;
           max-width: 92%;
           text-align: center;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-          animation: popIn 0.4s ease;
+          animation: popIn .4s ease;
         }
 
         .popupText {
@@ -212,50 +267,53 @@ function Popup({ text, buttons, grid }: any) {
         }
 
         .btnWrap {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 12px;
+          display:flex;
+          justify-content:center;
+          gap:12px;
+          flex-wrap:wrap;
         }
 
         .gridWrap {
-          display: grid;
-          grid-template-columns: repeat(2, 110px);
-          gap: 16px;
-          justify-content: center;
+          display:grid;
+          grid-template-columns: repeat(2,110px);
+          gap:16px;
+          justify-content:center;
         }
 
         .gridBtn {
-          width: 110px;
-          height: 110px;
-          font-size: 30px;
-          font-weight: bold;
-          border-radius: 18px;
-          border: none;
-          cursor: pointer;
-          background: linear-gradient(45deg, #ff4081, #ff80ab);
-          color: white;
+          width:110px;
+          height:110px;
+          font-size:28px;
+          border-radius:18px;
+          border:none;
+          cursor:pointer;
+          background:linear-gradient(45deg,#ff4081,#ff80ab);
+          color:white;
+          transition:.3s;
+        }
+
+        .gridBtn:hover {
+          transform:scale(1.1);
+          box-shadow:0 10px 30px rgba(255,64,129,.5);
         }
 
         .normalBtn {
-          padding: 12px 22px;
-          border-radius: 30px;
-          border: none;
-          background: linear-gradient(45deg, #ff4081, #ff80ab);
-          color: white;
-          font-weight: 600;
-          cursor: pointer;
+          padding:12px 22px;
+          border-radius:30px;
+          border:none;
+          background:linear-gradient(45deg,#ff4081,#ff80ab);
+          color:white;
+          font-weight:600;
+          cursor:pointer;
+        }
+
+        .normalBtn:hover {
+          transform:scale(1.08);
         }
 
         @keyframes popIn {
-          from {
-            opacity: 0;
-            transform: scale(0.7);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
+          from { opacity:0; transform:scale(.7);}
+          to { opacity:1; transform:scale(1);}
         }
       `}</style>
     </>
