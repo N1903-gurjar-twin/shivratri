@@ -69,10 +69,10 @@ export default function LovePage() {
 
       case 1:
         return {
-          text: "Be honest 😄\nWho is more cute?",
+          text: "Can I remove Pillow ❤️\nfrom your head?",
           buttons: [
-            { label: "You 😍", action: () => nextStep(2) },
-            { label: "Me 😎", action: () => nextStep(2) },
+            { label: "Yes 😍", action: () => nextStep(2) },
+            { label: "No 😎", action: () => nextStep(2) },
           ],
         };
 
@@ -142,26 +142,32 @@ export default function LovePage() {
 
       {step === 7 && (
         <main className="mainReveal">
-          <div className="introText">
-            A Special Surprise Just For You ✨
-          </div>
+          <div className="contentWrapper">
+            <div className="textSection">
+              <div className="introText">
+                A Special Surprise Just For You ✨
+              </div>
 
-          <h1>🌙 Happy Mahashivratri 🌙</h1>
-          <h2>For My Love ❤️</h2>
+              <h1>🌙 Happy Mahashivratri 🌙</h1>
+              <h2>For My Love ❤️</h2>
 
-          {/* Name stars */}
-          <div className="starName">
-            {"ARUSHI ❤️".split("").map((c, i) => (
-              <span key={i}>{c}</span>
-            ))}
-          </div>
+              {/* Name stars */}
+              <div className="starName">
+                {"ARUSHI ❤️".split("").map((c, i) => (
+                  <span key={i}>{c}</span>
+                ))}
+              </div>
 
-          <div key={quoteIndex} className="quote">
-            {quotes[quoteIndex]}
-          </div>
+              <div key={quoteIndex} className="quote">
+                {quotes[quoteIndex]}
+              </div>
+            </div>
 
-          <div key={currentImage} className="slider fadeSlide">
-            <img src={images[currentImage]} className="slideImage" />
+            <div className="imageSection">
+              <div key={currentImage} className="slider fadeSlide">
+                <img src={images[currentImage]} className="slideImage" />
+              </div>
+            </div>
           </div>
 
           {/* Heart burst */}
@@ -176,167 +182,301 @@ export default function LovePage() {
       <style jsx>{`
         .container {
           min-height: 100vh;
-          background: linear-gradient(120deg, #020024, #090979, #00d4ff);
+          background: linear-gradient(135deg, #1a0a1a 0%, #2d1b3d 25%, #3d1a2d 50%, #2a1a3a 75%, #1a0a2e 100%);
           color: white;
           text-align: center;
           overflow: hidden;
           padding: 30px;
+          position: relative;
+        }
+
+        .container::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          background: radial-gradient(circle at 50% 50%, rgba(255, 100, 150, 0.15) 0%, transparent 50%);
+          pointer-events: none;
         }
 
         .mainReveal {
-          animation: fadeIn 1.2s ease;
+          animation: cinematicFadeIn 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          position: relative;
+          z-index: 1;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
-        @keyframes fadeIn {
+        @keyframes cinematicFadeIn {
           from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(60px);
+            filter: blur(10px);
           }
           to {
             opacity: 1;
             transform: translateY(0);
+            filter: blur(0);
           }
+        }
+
+        .contentWrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          padding: 20px;
+        }
+
+        .textSection {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 8px;
+          text-align: center;
+        }
+
+        .imageSection {
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         /* Cinematic intro */
         .introText {
-          font-size: 26px;
-          margin-bottom: 20px;
+          font-size: 20px;
           opacity: 0;
-          animation: cinematic 3s ease forwards;
+          animation: cinematicIntro 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          font-weight: 300;
+          letter-spacing: 2px;
+          text-shadow: 0 0 30px rgba(255, 100, 150, 0.6), 0 0 60px rgba(255, 150, 200, 0.3);
         }
 
-        @keyframes cinematic {
+        @keyframes cinematicIntro {
           0% {
             opacity: 0;
-            transform: scale(1.4);
+            transform: scale(1.5) translateY(40px);
+            filter: blur(15px);
           }
-          60% {
-            opacity: 1;
-            transform: scale(1);
+          50% {
+            opacity: 0.7;
           }
           100% {
             opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+          }
+        }
+
+        h1 {
+          font-size: 42px;
+          margin: 0;
+          text-shadow: 0 0 20px rgba(255, 150, 200, 0.8), 0 0 40px rgba(255, 100, 150, 0.5);
+          animation: titleGlow 2s ease-in-out infinite;
+          line-height: 1.2;
+        }
+
+        h2 {
+          font-size: 28px;
+          margin: 0;
+          font-weight: 300;
+          text-shadow: 0 0 15px rgba(255, 150, 200, 0.7);
+        }
+
+        @keyframes titleGlow {
+          0%, 100% {
+            text-shadow: 0 0 20px rgba(255, 150, 200, 0.8), 0 0 40px rgba(255, 100, 150, 0.5);
+          }
+          50% {
+            text-shadow: 0 0 30px rgba(255, 200, 220, 1), 0 0 60px rgba(255, 150, 180, 0.7);
           }
         }
 
         .starName {
-          font-size: 42px;
-          letter-spacing: 6px;
-          margin: 20px 0;
+          font-size: 32px;
+          letter-spacing: 3px;
+          margin: 8px 0;
+          font-weight: 300;
         }
 
         .starName span {
           opacity: 0;
-          animation: starAppear 1s forwards;
+          display: inline-block;
+          animation: starAppearCinematic 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          text-shadow: 0 0 10px rgba(255, 100, 150, 0.8), 0 0 20px rgba(255, 150, 200, 0.5);
         }
 
-        @keyframes starAppear {
-          to {
+        .starName span:nth-child(1) { animation-delay: 0.1s; }
+        .starName span:nth-child(2) { animation-delay: 0.2s; }
+        .starName span:nth-child(3) { animation-delay: 0.3s; }
+        .starName span:nth-child(4) { animation-delay: 0.4s; }
+        .starName span:nth-child(5) { animation-delay: 0.5s; }
+        .starName span:nth-child(6) { animation-delay: 0.6s; }
+        .starName span:nth-child(7) { animation-delay: 0.7s; }
+
+        @keyframes starAppearCinematic {
+          0% {
+            opacity: 0;
+            transform: translateY(30px);
+            filter: blur(8px);
+          }
+          60% {
             opacity: 1;
-            text-shadow: 0 0 10px #fff, 0 0 20px #0ff, 0 0 30px #f0f;
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
           }
         }
 
         .quote {
-          margin: 20px;
-          font-size: 20px;
-          animation: fadeQuote 1s ease;
+          margin: 8px 0;
+          font-size: 16px;
+          font-weight: 300;
+          animation: quoteFlourish 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          text-shadow: 0 0 20px rgba(255, 150, 200, 0.6);
+          line-height: 1.5;
         }
 
-        @keyframes fadeQuote {
-          from {
+        @keyframes quoteFlourish {
+          0% {
             opacity: 0;
+            transform: translateY(20px);
+            filter: blur(8px);
           }
-          to {
+          100% {
             opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
           }
         }
 
         .slider {
-          max-width: 600px;
-          margin: auto;
-          border-radius: 20px;
+          width: 280px;
+          height: 360px;
+          border-radius: 24px;
           overflow: hidden;
-          box-shadow: 0 0 40px rgba(255, 255, 255, 0.7);
+          box-shadow: 0 0 60px rgba(255, 100, 150, 0.6), 0 0 100px rgba(255, 150, 200, 0.3);
+          border: 2px solid rgba(255, 150, 200, 0.4);
         }
 
         .slideImage {
           width: 100%;
-          animation: zoomEffect 6s ease-in-out infinite alternate;
+          height: 100%;
+          object-fit: cover;
+          animation: cinemaZoom 7s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite alternate;
+          display: block;
         }
 
-        @keyframes zoomEffect {
-          from {
+        @keyframes cinemaZoom {
+          0% {
             transform: scale(1);
           }
-          to {
-            transform: scale(1.18);
+          100% {
+            transform: scale(1.15);
           }
         }
 
         .fadeSlide {
-          animation: fadeImg 1s ease;
+          animation: cinematicFade 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        @keyframes fadeImg {
-          from {
+        @keyframes cinematicFade {
+          0% {
             opacity: 0;
+            filter: blur(10px);
           }
-          to {
+          100% {
             opacity: 1;
+            filter: blur(0);
           }
         }
 
-        /* Floating hearts */
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 36px;
+          }
+
+          .quote {
+            font-size: 14px;
+          }
+
+          .slider {
+            width: 260px;
+            height: 340px;
+          }
+        }
+
+        /* Floating hearts - more romantic */
         .hearts span {
           position: absolute;
           bottom: -50px;
-          width: 20px;
-          height: 20px;
-          background: red;
+          width: 24px;
+          height: 24px;
+          background: #ff6496;
           transform: rotate(45deg);
-          animation: rise 10s linear infinite;
-          opacity: 0.7;
+          animation: romanticRise 12s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+          opacity: 0.8;
+          filter: drop-shadow(0 0 8px rgba(255, 100, 150, 0.6));
         }
 
         .hearts span::before,
         .hearts span::after {
           content: "";
           position: absolute;
-          width: 20px;
-          height: 20px;
-          background: red;
+          width: 24px;
+          height: 24px;
+          background: #ff6496;
           border-radius: 50%;
         }
 
         .hearts span::before {
-          top: -10px;
+          top: -12px;
         }
         .hearts span::after {
-          left: -10px;
+          left: -12px;
         }
 
-        @keyframes rise {
-          to {
+        @keyframes romanticRise {
+          0% {
+            transform: translateY(0) rotate(45deg);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.8;
+          }
+          90% {
+            opacity: 0.8;
+          }
+          100% {
             transform: translateY(-110vh) rotate(45deg);
+            opacity: 0;
           }
         }
 
-        /* Heart burst */
+        /* Heart burst - enhanced */
         .heartBurst span {
           position: absolute;
-          width: 15px;
-          height: 15px;
-          background: red;
+          width: 18px;
+          height: 18px;
+          background: #ff6496;
           transform: rotate(45deg);
-          animation: burst 1.5s ease-out forwards;
+          animation: cinematicBurst 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          filter: drop-shadow(0 0 6px rgba(255, 100, 150, 0.8));
         }
 
-        @keyframes burst {
-          to {
+        @keyframes cinematicBurst {
+          0% {
+            opacity: 1;
+            transform: translate(0, 0) rotate(45deg) scale(1);
+          }
+          100% {
             opacity: 0;
-            transform: translateY(-300px) rotate(45deg);
+            transform: translate(var(--tx), var(--ty)) rotate(45deg) scale(0);
           }
         }
       `}</style>
@@ -370,41 +510,46 @@ function Popup({ text, buttons, grid }: any) {
         .popup {
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(8px);
+          background: rgba(10, 5, 20, 0.75);
+          backdrop-filter: blur(15px);
           display: flex;
           justify-content: center;
           align-items: center;
+          z-index: 1000;
         }
 
         .popupBox {
-          background: linear-gradient(145deg, #fff, #ffe4ec);
-          padding: 35px;
-          border-radius: 24px;
+          background: linear-gradient(145deg, rgba(255, 200, 220, 0.95), rgba(255, 180, 210, 0.95));
+          padding: 45px;
+          border-radius: 30px;
           width: 420px;
           max-width: 92%;
           text-align: center;
-          animation: popIn 0.4s ease;
+          animation: cinematicPopIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          box-shadow: 0 20px 60px rgba(255, 100, 150, 0.4), 0 0 40px rgba(255, 150, 200, 0.2);
+          border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .popupText {
-          font-size: 20px;
-          margin-bottom: 20px;
-          color: #222;
+          font-size: 22px;
+          margin-bottom: 28px;
+          color: #5a1a3a;
           white-space: pre-line;
+          font-weight: 400;
+          line-height: 1.5;
         }
 
         .btnWrap {
           display: flex;
           justify-content: center;
-          gap: 12px;
+          gap: 14px;
           flex-wrap: wrap;
         }
 
         .gridWrap {
           display: grid;
           grid-template-columns: repeat(2, 110px);
-          gap: 16px;
+          gap: 18px;
           justify-content: center;
         }
 
@@ -412,31 +557,59 @@ function Popup({ text, buttons, grid }: any) {
           width: 110px;
           height: 110px;
           font-size: 28px;
-          border-radius: 18px;
+          border-radius: 20px;
           border: none;
           cursor: pointer;
-          background: linear-gradient(45deg, #ff4081, #ff80ab);
+          background: linear-gradient(135deg, #ff4081 0%, #ff1493 100%);
           color: white;
+          font-weight: 600;
+          box-shadow: 0 8px 25px rgba(255, 64, 129, 0.4);
+          transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .gridBtn:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 35px rgba(255, 64, 129, 0.6);
+          background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+        }
+
+        .gridBtn:active {
+          transform: translateY(-2px);
         }
 
         .normalBtn {
-          padding: 12px 22px;
+          padding: 14px 32px;
           border-radius: 30px;
           border: none;
-          background: linear-gradient(45deg, #ff4081, #ff80ab);
+          background: linear-gradient(135deg, #ff4081 0%, #ff1493 100%);
           color: white;
           font-weight: 600;
           cursor: pointer;
+          box-shadow: 0 8px 25px rgba(255, 64, 129, 0.4);
+          transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          font-size: 16px;
         }
 
-        @keyframes popIn {
-          from {
+        .normalBtn:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 35px rgba(255, 64, 129, 0.6);
+          background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+        }
+
+        .normalBtn:active {
+          transform: translateY(-1px);
+        }
+
+        @keyframes cinematicPopIn {
+          0% {
             opacity: 0;
-            transform: scale(0.7);
+            transform: scale(0.5) translateY(40px);
+            filter: blur(10px);
           }
-          to {
+          100% {
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1) translateY(0);
+            filter: blur(0);
           }
         }
       `}</style>
