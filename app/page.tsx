@@ -1,10 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function LovePage() {
   const [step, setStep] = useState(0);
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [currentImage, setCurrentImage] = useState(0);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const quotes = [
     "Like Shiva & Parvati, may our love stay eternal ❤️",
@@ -13,10 +15,28 @@ export default function LovePage() {
     "Life feels complete with you.",
   ];
 
-  const images = ["/shiv.png", "/check.jfif"];
+  const images = [
+    "/shiv.png",
+    "/check.jfif",
+    "image1.jpeg",
+    "image2.jpeg",
+    "image3.jpeg",
+    "image4.jpeg",
+    "image5.jpeg",
+    "image6.jpeg",
+  ];
 
-  const nextStep = (n: number) => setStep(n);
+ const nextStep = (n: number) => {
+  if (audioRef.current && audioRef.current.paused) {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(() => {});
+  }
 
+  setStep(n);
+};
+
+
+  /* Quotes + slideshow */
   useEffect(() => {
     if (step !== 7) return;
 
@@ -27,7 +47,7 @@ export default function LovePage() {
 
     const s = setInterval(
       () => setCurrentImage((p) => (p + 1) % images.length),
-      5000
+      4500
     );
 
     return () => {
@@ -101,6 +121,9 @@ export default function LovePage() {
 
   return (
     <div className="container">
+      <audio ref={audioRef} loop autoPlay>
+        <source src="/music/Talks_1.mp3" type="audio/mpeg" />
+      </audio>
 
       {/* Floating hearts */}
       <div className="hearts">
@@ -119,15 +142,33 @@ export default function LovePage() {
 
       {step === 7 && (
         <main className="mainReveal">
+          <div className="introText">
+            A Special Surprise Just For You ✨
+          </div>
+
           <h1>🌙 Happy Mahashivratri 🌙</h1>
           <h2>For My Love ❤️</h2>
+
+          {/* Name stars */}
+          <div className="starName">
+            {"ARUSHI ❤️".split("").map((c, i) => (
+              <span key={i}>{c}</span>
+            ))}
+          </div>
 
           <div key={quoteIndex} className="quote">
             {quotes[quoteIndex]}
           </div>
 
-          <div className="slider">
+          <div key={currentImage} className="slider fadeSlide">
             <img src={images[currentImage]} className="slideImage" />
+          </div>
+
+          {/* Heart burst */}
+          <div className="heartBurst">
+            {[...Array(40)].map((_, i) => (
+              <span key={i}></span>
+            ))}
           </div>
         </main>
       )}
@@ -147,8 +188,54 @@ export default function LovePage() {
         }
 
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Cinematic intro */
+        .introText {
+          font-size: 26px;
+          margin-bottom: 20px;
+          opacity: 0;
+          animation: cinematic 3s ease forwards;
+        }
+
+        @keyframes cinematic {
+          0% {
+            opacity: 0;
+            transform: scale(1.4);
+          }
+          60% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        .starName {
+          font-size: 42px;
+          letter-spacing: 6px;
+          margin: 20px 0;
+        }
+
+        .starName span {
+          opacity: 0;
+          animation: starAppear 1s forwards;
+        }
+
+        @keyframes starAppear {
+          to {
+            opacity: 1;
+            text-shadow: 0 0 10px #fff, 0 0 20px #0ff, 0 0 30px #f0f;
+          }
         }
 
         .quote {
@@ -158,8 +245,12 @@ export default function LovePage() {
         }
 
         @keyframes fadeQuote {
-          from { opacity:0; }
-          to { opacity:1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
 
         .slider {
@@ -167,7 +258,7 @@ export default function LovePage() {
           margin: auto;
           border-radius: 20px;
           overflow: hidden;
-          box-shadow: 0 0 40px rgba(255,255,255,0.7);
+          box-shadow: 0 0 40px rgba(255, 255, 255, 0.7);
         }
 
         .slideImage {
@@ -176,11 +267,28 @@ export default function LovePage() {
         }
 
         @keyframes zoomEffect {
-          from { transform: scale(1); }
-          to { transform: scale(1.18); }
+          from {
+            transform: scale(1);
+          }
+          to {
+            transform: scale(1.18);
+          }
         }
 
-        /* floating hearts */
+        .fadeSlide {
+          animation: fadeImg 1s ease;
+        }
+
+        @keyframes fadeImg {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        /* Floating hearts */
         .hearts span {
           position: absolute;
           bottom: -50px;
@@ -202,12 +310,33 @@ export default function LovePage() {
           border-radius: 50%;
         }
 
-        .hearts span::before { top:-10px; }
-        .hearts span::after { left:-10px; }
+        .hearts span::before {
+          top: -10px;
+        }
+        .hearts span::after {
+          left: -10px;
+        }
 
         @keyframes rise {
           to {
             transform: translateY(-110vh) rotate(45deg);
+          }
+        }
+
+        /* Heart burst */
+        .heartBurst span {
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          background: red;
+          transform: rotate(45deg);
+          animation: burst 1.5s ease-out forwards;
+        }
+
+        @keyframes burst {
+          to {
+            opacity: 0;
+            transform: translateY(-300px) rotate(45deg);
           }
         }
       `}</style>
@@ -215,8 +344,7 @@ export default function LovePage() {
   );
 }
 
-/* -------- Popup -------- */
-
+/* Popup component unchanged */
 function Popup({ text, buttons, grid }: any) {
   return (
     <>
@@ -242,7 +370,7 @@ function Popup({ text, buttons, grid }: any) {
         .popup {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.6);
+          background: rgba(0, 0, 0, 0.6);
           backdrop-filter: blur(8px);
           display: flex;
           justify-content: center;
@@ -250,13 +378,13 @@ function Popup({ text, buttons, grid }: any) {
         }
 
         .popupBox {
-          background: linear-gradient(145deg,#fff,#ffe4ec);
+          background: linear-gradient(145deg, #fff, #ffe4ec);
           padding: 35px;
           border-radius: 24px;
           width: 420px;
           max-width: 92%;
           text-align: center;
-          animation: popIn .4s ease;
+          animation: popIn 0.4s ease;
         }
 
         .popupText {
@@ -267,53 +395,49 @@ function Popup({ text, buttons, grid }: any) {
         }
 
         .btnWrap {
-          display:flex;
-          justify-content:center;
-          gap:12px;
-          flex-wrap:wrap;
+          display: flex;
+          justify-content: center;
+          gap: 12px;
+          flex-wrap: wrap;
         }
 
         .gridWrap {
-          display:grid;
-          grid-template-columns: repeat(2,110px);
-          gap:16px;
-          justify-content:center;
+          display: grid;
+          grid-template-columns: repeat(2, 110px);
+          gap: 16px;
+          justify-content: center;
         }
 
         .gridBtn {
-          width:110px;
-          height:110px;
-          font-size:28px;
-          border-radius:18px;
-          border:none;
-          cursor:pointer;
-          background:linear-gradient(45deg,#ff4081,#ff80ab);
-          color:white;
-          transition:.3s;
-        }
-
-        .gridBtn:hover {
-          transform:scale(1.1);
-          box-shadow:0 10px 30px rgba(255,64,129,.5);
+          width: 110px;
+          height: 110px;
+          font-size: 28px;
+          border-radius: 18px;
+          border: none;
+          cursor: pointer;
+          background: linear-gradient(45deg, #ff4081, #ff80ab);
+          color: white;
         }
 
         .normalBtn {
-          padding:12px 22px;
-          border-radius:30px;
-          border:none;
-          background:linear-gradient(45deg,#ff4081,#ff80ab);
-          color:white;
-          font-weight:600;
-          cursor:pointer;
-        }
-
-        .normalBtn:hover {
-          transform:scale(1.08);
+          padding: 12px 22px;
+          border-radius: 30px;
+          border: none;
+          background: linear-gradient(45deg, #ff4081, #ff80ab);
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
         }
 
         @keyframes popIn {
-          from { opacity:0; transform:scale(.7);}
-          to { opacity:1; transform:scale(1);}
+          from {
+            opacity: 0;
+            transform: scale(0.7);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
         }
       `}</style>
     </>
