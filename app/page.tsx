@@ -96,7 +96,7 @@ export default function LovePage() {
 
       case 4:
         return {
-          text: "Kukoo loves you sooo much ❤️",
+          text: "Kukoo love you sooo much ❤️",
           buttons: [{ label: "Aww 💞", action: () => nextStep(5) }],
         };
 
